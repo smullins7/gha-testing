@@ -1,0 +1,37 @@
+name: "Commit Checks"
+
+on: [push]
+
+jobs:
+  formatting:
+    name: "Formatting"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/github-script@0.6.0
+        id: pr
+        with:
+          result-encoding: string
+          script: |
+            const result = await github.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.payload.repository.owner.name,
+              repo: context.payload.repository.name,
+              commit_sha: context.payload.head_commit.id
+            })
+            return result.data[0].number;
+      - name: Get result
+        run: echo "${{steps.pr.outputs.result}}"
+      - id: file_changes
+        uses: smullins7/file-changes-action@v1.3
+        with:
+          fileOutput: '\n'
+          prNumber: ${{ steps.pr.outputs.result }}
+          paths:
+            - .md
+      - name: Debug files
+        run: cat $HOME/files_modified.txt
+        id: files

@@ -7,10 +7,6 @@ jobs:
     name: "Formatting"
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
       - uses: actions/github-script@0.6.0
         id: pr
@@ -26,7 +22,7 @@ jobs:
       - name: Get result
         run: echo "${{steps.pr.outputs.result}}"
       - id: file_changes
-        uses: smullins7/file-changes-action@v1.3.1
+        uses: smullins7/file-changes-action@v1.3.2
         with:
           fileOutput: '\n'
           prNumber: ${{ steps.pr.outputs.result }}

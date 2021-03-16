@@ -22,7 +22,7 @@ jobs:
       - name: Get result
         run: echo "${{steps.pr.outputs.result}}"
       - id: file_changes
-        uses: smullins7/file-changes-action@v1.3.4
+        uses: smullins7/file-changes-action@v1.3.5
         with:
           fileOutput: '\n'
           prNumber: ${{ steps.pr.outputs.result }}
